@@ -1,0 +1,9 @@
+form {
+  border: 1px solid black;
+  padding: 5px;
+}
+
+.inputStyle {
+  display: block;
+  margin-top: 10px;
+}
