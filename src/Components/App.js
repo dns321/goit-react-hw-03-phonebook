@@ -7,18 +7,13 @@ import Section from './section/Section';
 
 class App extends Component {
   state = {
-    contacts: [
-      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-    ],
+    contacts: [],
     filter: '',
   };
 
   handleAddContact = data => {
     this.setState(prev => ({
-      contacts: [{ ...data, id: uuidv4() }, ...prev.contacts],
+      contacts: [{ id: uuidv4(), ...data }, ...prev.contacts],
     }));
   };
 
@@ -26,7 +21,6 @@ class App extends Component {
     const findeContact = !this.state.contacts.find(
       contact => contact.name === contactName,
     );
-    console.log(findeContact);
     return findeContact;
   };
 
@@ -39,6 +33,27 @@ class App extends Component {
       contacts: prevState.contacts.filter(contact => contact.id !== contactId),
     }));
   };
+
+  componentDidMount() {
+    console.log('componentDidMount');
+
+    const contacts = localStorage.getItem('contacts');
+    const parsetcontacts = JSON.parse(contacts);
+
+    if (parsetcontacts) {
+      this.setState({ contacts: parsetcontacts });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    console.log('componentDidUpdate');
+
+    if (this.state.contacts !== prevState.contacts) {
+      console.log('right Locsal storeg');
+
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
 
   render() {
     const { filter } = this.state;
